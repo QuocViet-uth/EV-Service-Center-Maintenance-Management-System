@@ -7,6 +7,7 @@ Technican
 Admin"
 
 "1. Chức năng cho Khách hàng (Customer)
+
 a. Theo dõi xe & nhắc nhở
 + Nhắc nhở bảo dưỡng định kỳ theo km hoặc thời gian.
 + Nhắc thanh toán gói bảo dưỡng định kỳ hoặc gia hạn gói dịch vụ.
@@ -22,6 +23,7 @@ c. Quản lý hồ sơ & chi phí
 + Thanh toán online (e-wallet, banking, ...)."
   
 "2. Chức năng cho Trung tâm dịch vụ (Staff, Technican, Admin)
+
 a. Quản lý khách hàng & xe
 + Hồ sơ khách hàng & xe (model, VIN, lịch sử dịch vụ).
 + Chat trực tuyến với khách hàng.
