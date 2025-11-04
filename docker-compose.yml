@@ -1,18 +1,33 @@
 version: '3.8'
+
 services:
-  db:
-    image: postgres:15-alpine
-    container_name: ev_service_db
-    restart: unless-stopped
+  postgres:
+    build:
+      context: ./docker/postgres
+    image: ev_service_db_postgres
+    container_name: ev_service_db_postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: ev_service
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
-    volumes:
-      - db-data:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  pgadmin:
+    build:
+      context: ./docker/pgadmin
+    image: ev_service_db_pgadmin
+    container_name: ev_service_db_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+
 volumes:
-  db-data:
-    name: ev_service_db_data
+  postgres_data:
