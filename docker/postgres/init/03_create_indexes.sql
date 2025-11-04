@@ -1,0 +1,12 @@
+CREATE INDEX idx_customer_email ON "Customer" (email);
+CREATE INDEX idx_vehicle_vin ON "Vehicle" (vin);
+CREATE INDEX idx_service_center_name ON "ServiceCenter" (name);
+CREATE INDEX idx_staff_email ON "Staff" (email);
+CREATE INDEX idx_appointment_status ON "Appointment" (status);
+CREATE INDEX idx_work_order_status ON "WorkOrder" (status);
+CREATE INDEX idx_part_sku ON "Part" (sku);
+CREATE INDEX idx_invoice_status ON "Invoice" (status);
+CREATE INDEX idx_payment_status ON "Payment" (status);
+CREATE INDEX idx_chat_message_sent_at ON "ChatMessage" (sent_at);
+CREATE INDEX idx_notification_scheduled_at ON "Notification" (scheduled_at);
+CREATE INDEX idx_ai_recommendation_generated_at ON "AIRecommendation" (generated_at);
