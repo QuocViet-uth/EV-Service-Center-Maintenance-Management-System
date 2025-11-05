@@ -442,7 +442,58 @@ Admin có thể xem báo cáo doanh thu, chi phí, lợi nhuận, và thống k�
 4. Admin có thể xuất file báo cáo.
 
 ### 5.3 Sơ đồ trình tự (Sequence Diagram)
-![Use Case Diagram](Sequence_Diagram)
+![Sequence Diagram](Sequence_Diagram.drawio.png)
+
+**Mô tả tổng quan:**  
+Sơ đồ trình tự thể hiện các tương tác động giữa các tác nhân (Customer, Staff, Technician, Admin) với hệ thống trong quá trình xử lý các nghiệp vụ chính.  
+Hệ thống bao gồm các thành phần chính:
+- **Customer:** người dùng cuối sử dụng xe điện.
+- **System:** hệ thống phần mềm quản lý trung tâm bảo dưỡng xe điện.
+- **Database:** nơi lưu trữ thông tin khách hàng, xe, lịch hẹn, phụ tùng, và giao dịch.
+- **Staff:** nhân viên trung tâm tiếp nhận và xử lý yêu cầu của khách hàng.
+- **Technician:** kỹ thuật viên thực hiện bảo dưỡng xe.
+- **Payment:** hệ thống thanh toán trực tuyến.
+- **Admin:** người quản trị giám sát hoạt động và báo cáo hệ thống.
+
+**Các luồng chính trong sơ đồ:**  
+
+**Luồng “Đặt lịch bảo dưỡng / sửa chữa”**  
+1. Khách hàng đăng nhập vào hệ thống.
+2. Hệ thống xác thực thông tin đăng nhập qua cơ sở dữ liệu.
+3. Khách hàng chọn trung tâm dịch vụ, loại dịch vụ, thời gian mong muốn.
+4. Hệ thống kiểm tra lịch trống và xác nhận đặt lịch.
+5. Cơ sở dữ liệu lưu thông tin lịch hẹn.
+6. Hệ thống gửi thông báo xác nhận cho khách hàng và nhân viên trung tâm.
+
+**Luồng “Quy trình bảo dưỡng / sửa chữa”**
+1. Nhân viên trung tâm tiếp nhận yêu cầu bảo dưỡng từ khách hàng.
+2. Hệ thống gán yêu cầu cho kỹ thuật viên phù hợp.
+3. Kỹ thuật viên kiểm tra tình trạng xe, ghi nhận kết quả ban đầu.
+4. Trong quá trình bảo dưỡng, kỹ thuật viên cập nhật tiến độ (đang làm – hoàn tất).
+5. Hệ thống cập nhật trạng thái xe cho khách hàng.
+6. Nếu cần thay phụ tùng, hệ thống kiểm tra tồn kho và thông báo đến Admin khi lượng tồn xuống thấp.
+
+**Luồng “Thanh toán dịch vụ”**
+1. Sau khi xe hoàn tất bảo dưỡng, hệ thống tạo hóa đơn.
+2. Khách hàng mở mục “Thanh toán hóa đơn”.
+3. Hệ thống gửi yêu cầu đến cổng thanh toán (Payment).
+4. Payment xác nhận giao dịch với ngân hàng.
+5. Hệ thống nhận phản hồi và cập nhật trạng thái thanh toán.
+6. Hóa đơn điện tử được gửi cho khách hàng.
+
+**Luồng “Quản lí phụ tùng & Gợi ý tồn kho”**
+1. Kỹ thuật viên yêu cầu sử dụng hoặc thay thế phụ tùng đến hệ thống.
+2. Hệ thống kiểm tra hàng tồn kho qua cơ sở dữ liệu.
+3. Hệ thống gửi yêu cầu cần duyệt đến Admin.
+4. Admin phê duyệt yêu cầu và cập nhật hệ thống.
+5. Hệ thống cập nhật tồn kho vào cơ sở dữ liệu.
+6. Hệ thống phân tích dữ liệu phụ tùng và gửi báo cao đến Admin.
+
+**Luồng "Báo cáo tài chính và thống kê dịch vụ"**
+1. Admin yêu cầu xem báo cáo tài chính đến hệ thống.
+2. Hệ thống truy xuất dữ liệu từ cơ sở dữ liệu.
+3. Hệ thống xử lí, tổng hợp thống cơ dữ liệu từ cơ sở dữ liệu.
+4. Hệ thống gửi báo cáo thống kê cho Admin.
 
 
 
