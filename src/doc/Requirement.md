@@ -1,25 +1,25 @@
 # Tài liệu đặc tả yêu cầu
 **Project:** EV Service Center Maintenance Management System
 ## 1. Giới thiệu
-### 1.1 Mục đích
+### 1.1. Mục đích
 Tài liệu này mô tả chi tiết các yêu cầu chức năng và phi chức năng của hệ thống EV Service Center Maintenance Management System (EVSCMMS) – một phần mềm được thiết kế nhằm hỗ trợ các trung tâm dịch vụ quản lý toàn bộ quy trình bảo dưỡng, sửa chữa và quản lý khách hàng đối với xe điện (Electric Vehicle – EV).  
 Mục tiêu của hệ thống là:
 - Cung cấp một nền tảng số hóa quy trình bảo dưỡng xe điện, giúp khách hàng dễ dàng đặt lịch và theo dõi tình trạng xe.
 - Hỗ trợ trung tâm dịch vụ (staff, kỹ thuật viên, quản trị viên) trong việc tiếp nhận, quản lý lịch hẹn, quy trình bảo dưỡng, phụ tùng, nhân sự và tài chính.
 - Tối ưu hiệu suất vận hành của trung tâm và nâng cao trải nghiệm khách hàng thông qua các tính năng tự động hóa, gợi ý thông minh và báo cáo thống kê.
-### 1.2 Phạm vi
+### 1.2. Phạm vi
 Phần mềm EV Service Center Maintenance Management System là hệ thống web/app tích hợp dành cho các trung tâm dịch vụ xe điện và khách hàng.  
 Hệ thống cho phép:
-- **Khách hàng(Customer):** đặt lịch bảo dưỡng, nhận thông báo nhắc nhở định kỳ, thanh toán trực tuyến, theo dõi trạng thái xe và lưu lịch sử dịch vụ.
-- **Nhân viên trung tâm(Staff):** quản lý hồ sơ khách hàng, lập lịch, tiếp nhận xe và theo dõi tiến độ bảo dưỡng.
-- **Kỹ thuật viên(Technician):** cập nhật tình trạng xe, ghi nhận thông tin kiểm tra, thay thế phụ tùng và hoàn tất phiếu dịch vụ.
-- **Quản trị viên(Admin):** giám sát toàn bộ hoạt động, quản lý nhân sự, phụ tùng, tài chính và khai thác báo cáo thống kê.  
+- **Khách hàng (Customer):** đặt lịch bảo dưỡng, nhận thông báo nhắc nhở định kỳ, thanh toán trực tuyến, theo dõi trạng thái xe và lưu lịch sử dịch vụ.
+- **Nhân viên trung tâm (Staff):** quản lý hồ sơ khách hàng, lập lịch, tiếp nhận xe và theo dõi tiến độ bảo dưỡng.
+- **Kỹ thuật viên (Technician):** cập nhật tình trạng xe, ghi nhận thông tin kiểm tra, thay thế phụ tùng và hoàn tất phiếu dịch vụ.
+- **Quản trị viên (Admin):** giám sát toàn bộ hoạt động, quản lý nhân sự, phụ tùng, tài chính và khai thác báo cáo thống kê.  
 
 Phạm vi triển khai của hệ thống bao gồm:
 - Trung tâm bảo dưỡng xe điện quy mô nhỏ đến lớn.
 - Môi trường web (trình duyệt).
 - Tích hợp thanh toán online qua ví điện tử hoặc ngân hàng.
-### 1.3 Đối tượng sử dụng
+### 1.3. Đối tượng sử dụng
 **Customer**: Đặt lịch, theo dõi tình trạng xe, nhận nhắc nhở, thanh toán online.  
 **Staff**: Tiếp nhận yêu cầu dịch vụ, lập lịch, quản lý hồ sơ khách hàng & xe.  
 **Technician**: Thực hiện quy trình bảo dưỡng, cập nhật tiến độ, ghi nhận tình trạng xe và phụ tùng.  
@@ -44,7 +44,7 @@ Hệ thống **EVSCMMS** là một ứng dụng quản lý tổng thể dành ch
 4. Hệ thống tạo hóa đơn → khách hàng thanh toán trực tuyến.
 5. Quản trị viên theo dõi báo cáo doanh thu, quản lý nhân sự và phụ tùng.
 
-### 2.2 Các tác nhân hệ thống
+### 2.2. Các tác nhân hệ thống
 **Actor:** Customer  
 **Vai trò:** Người sử dụng dịch vụ  
 **Mô tả chi tiết:** Đặt lịch bảo dưỡng, nhận nhắc nhở, theo dõi tiến độ và thanh toán online.
@@ -65,7 +65,7 @@ Hệ thống **EVSCMMS** là một ứng dụng quản lý tổng thể dành ch
 **Vai trò:** Dịch vụ bên ngoài  
 **Mô tả chi tiết:** ĐXử lý các giao dịch thanh toán trực tuyến.
 
-### 2.3 Các ràng buộc hệ thống (System Constraints)
+### 2.3. Các ràng buộc hệ thống (System Constraints)
 - **Hạn chế kỹ thuật:**
     + Ứng dụng web chạy trên các trình duyệt phổ biến (Chrome, Edge, Safari).
     + Dữ liệu được lưu trữ trong hệ quản trị cơ sở dữ liệu MySQL hoặc PostgreSQL.
@@ -79,7 +79,7 @@ Hệ thống **EVSCMMS** là một ứng dụng quản lý tổng thể dành ch
 - **Hạn chế tích hợp:**
     + Chỉ hỗ trợ thanh toán qua các cổng phổ biến (MoMo, ZaloPay, VNPay, ngân hàng nội địa).
 
-### 2.4 Giả định và phụ thuộc (Assumptions and Dependencies)
+### 2.4. Giả định và phụ thuộc (Assumptions and Dependencies)
 **Giả định:** Trung tâm dịch vụ có cơ sở hạ tầng mạng ổn định  
 **Mô tả:** Hệ thống yêu cầu kết nối internet liên tục để đồng bộ dữ liệu.
 
@@ -95,7 +95,7 @@ Hệ thống **EVSCMMS** là một ứng dụng quản lý tổng thể dành ch
 **Giả định:** Các trung tâm có quy trình bảo dưỡng EV chuẩn hóa    
 **Mô tả:** Đảm bảo quy trình và checklist được áp dụng đồng nhất trên toàn hệ thống.
 
-### 2.5 Mô hình kiến trúc dự kiến (Proposed System Architecture)
+### 2.5. Mô hình kiến trúc dự kiến (Proposed System Architecture)
 **Frontend:**  
 - Web: ReactJS.  
 
@@ -249,6 +249,49 @@ Hệ thống **EVSCMMS** là một ứng dụng quản lý tổng thể dành ch
 **Điều kiện sau:** Báo cáo được sinh tự động và xuất ra file (PDF, Excel).  
 **Mức độ ưu tiên:** Cao.
 
+## 4. Yêu cầu phi chức năng (Non-Functional Requirements)
+### 4.1. Hiệu năng (Performance Requirements)
+- Hệ thống phải xử lý tối thiểu 100 yêu cầu đồng thời từ người dùng mà không bị gián đoạn hoặc giảm hiệu suất đáng kể.
+- Thời gian phản hồi trung bình của hệ thống cho các thao tác cơ bản (tra cứu, thêm, sửa, xóa dữ liệu) không vượt quá 3 giây.
+- Hệ thống phải có khả năng mở rộng để đáp ứng nhu cầu của nhiều chi nhánh trung tâm dịch vụ trong tương lai.
+- Tốc độ truy cập dữ liệu bảo trì, hồ sơ khách hàng và phụ tùng phải đảm bảo ổn định ngay cả khi cơ sở dữ liệu đạt trên 100.000 bản ghi.
+### 4.2. Tính bảo mật (Security Requirements)
+- Hệ thống phải đảm bảo xác thực người dùng bằng tài khoản và mật khẩu mã hóa.
+- Phân quyền rõ ràng cho từng loại tài khoản:
+	+ **Quản trị viên (Admin)**: quản lý toàn bộ hệ thống.
+ 	+ **Kỹ thuật viên (Technician)**: truy cập và cập nhật thông tin bảo trì.
+  	+ **Nhân viên trung tâm (Staff)**: tiếp nhận xe và tạo phiếu dịch vụ.
+	+ **Khách hàng (Customer)**: xem lịch sử bảo trì và đặt lịch hẹn.
+- Dữ liệu khách hàng, đặc biệt là thông tin liên hệ và biển số xe, phải được bảo vệ khỏi truy cập trái phép.
+- Hệ thống phải hỗ trợ sao lưu và phục hồi dữ liệu định kỳ để tránh mất mát thông tin.
+- Tất cả các hoạt động quan trọng (đăng nhập, cập nhật dữ liệu, xóa thông tin) phải được ghi nhật ký (log) để phục vụ truy vết khi cần.
+
+### 4.3. Tính khả dụng và độ tin cậy (Availability and Reliability)
+- Hệ thống phải đảm bảo thời gian hoạt động (uptime) tối thiểu 99% trong năm.
+- Phải có cơ chế tự động phát hiện lỗi và thông báo đến quản trị viên khi có sự cố.
+- Dữ liệu quan trọng (hồ sơ bảo trì, thông tin khách hàng) phải được sao lưu tự động hàng ngày.
+- Hệ thống cần hỗ trợ khôi phục dữ liệu trong vòng 1 giờ kể từ khi xảy ra sự cố.
+
+### 4.4. Tính khả chuyển (Portability Requirements)
+- Ứng dụng phải có khả năng triển khai trên nhiều môi trường: Windows, Linux và nền tảng web.
+- Giao diện người dùng phải tương thích với nhiều trình duyệt phổ biến (Chrome, Edge, Firefox).
+- Hệ thống có thể tích hợp với ứng dụng di động trong giai đoạn mở rộng (Mobile App).
+
+### 4.5. Tính dễ sử dụng (Usability Requirements)
+- Giao diện người dùng (UI) cần trực quan, thân thiện, dễ thao tác cho cả người không chuyên về công nghệ.
+- Các chức năng chính (đặt lịch, xem thông tin bảo trì, quản lý phụ tùng, báo cáo) phải được bố trí rõ ràng và dễ truy cập.
+- Hệ thống cần hỗ trợ ngôn ngữ tiếng Việt và tiếng Anh để thuận tiện cho người dùng đa quốc tịch.
+
+### 4.6. Tính bảo trì và mở rộng (Maintainability and Scalability)
+- Mã nguồn phải được thiết kế mô-đun hóa (modular) để dễ bảo trì, nâng cấp và mở rộng.
+- Cấu trúc hệ thống cần cho phép thêm mới chức năng mà không ảnh hưởng đến các phần hiện có.
+- Tài liệu kỹ thuật (Technical Documentation) phải được cập nhật song song với quá trình phát triển.
+- Hệ thống hỗ trợ cập nhật phần mềm tự động hoặc bán tự động, đảm bảo người dùng luôn sử dụng phiên bản mới nhất.
+
+### 4.7. Tính tương thích (Compatibility Requirements)
+- Hệ thống phải tương thích với các phần mềm quản lý hiện có như hệ thống kế toán hoặc quản lý kho (Inventory Management).
+- Phải hỗ trợ tích hợp API để trao đổi dữ liệu với các ứng dụng bên ngoài (ví dụ: ứng dụng đặt lịch, hệ thống thanh toán trực tuyến).
+- Cơ sở dữ liệu tương thích với các hệ quản trị phổ biến như MySQL, PostgreSQL hoặc SQL Server.
 
 
 
