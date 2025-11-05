@@ -487,7 +487,7 @@ Hệ thống bao gồm các thành phần chính:
 3. Hệ thống gửi yêu cầu cần duyệt đến Admin.
 4. Admin phê duyệt yêu cầu và cập nhật hệ thống.
 5. Hệ thống cập nhật tồn kho vào cơ sở dữ liệu.
-6. Hệ thống phân tích dữ liệu phụ tùng và gửi báo cao đến Admin.
+6. Hệ thống phân tích dữ liệu phụ tùng và gửi báo cáo đến Admin.
 
 **Luồng "Báo cáo tài chính và thống kê dịch vụ"**
 1. Admin yêu cầu xem báo cáo tài chính đến hệ thống.
