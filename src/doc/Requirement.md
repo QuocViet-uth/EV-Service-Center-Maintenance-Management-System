@@ -101,13 +101,13 @@ Hệ thống **EVSCMMS** là một ứng dụng quản lý tổng thể dành ch
 
 **Backend:**
 - Framework: .NET Core / Node.js / Java Spring Boot.  
-- Database: MySQL / PostgreSQL.  
+- Database: MySQL.  
 - RESTful API để kết nối các thành phần.
 
 **Hệ thống hỗ trợ:**
-- AI module gợi ý nhu cầu phụ tùng thay thế.
-- Notification service (Firebase Cloud Messaging / Email Server).
-- Payment Gateway tích hợp (VNPay, MoMo, ZaloPay).
+- Module phân tích và gợi ý tồn kho tối thiểu phụ tùng dựa trên AI logic nội bộ
+- Module nhắc nhở khách hàng nghiệp vụ bảo dưỡng, hóa đơn, dịch vụ qua hệ thống API.
+- Tích hợp thanh toán online mô phỏng qua getway phổ biến (MoMo, VNPay, ZaloPay).
 
 ## 3. Yêu cầu chức năng (Functional Requirements)
 ### 3.1. Chức năng cho Khách hàng (Customer)
@@ -293,6 +293,94 @@ Hệ thống **EVSCMMS** là một ứng dụng quản lý tổng thể dành ch
 - Phải hỗ trợ tích hợp API để trao đổi dữ liệu với các ứng dụng bên ngoài (ví dụ: ứng dụng đặt lịch, hệ thống thanh toán trực tuyến).
 - Cơ sở dữ liệu tương thích với các hệ quản trị phổ biến như MySQL, PostgreSQL hoặc SQL Server.
 
+## 5. Mô hình & sơ đồ (Models & Diagrams)
+### 5.1. Sơ đồ Use Case tổng thể
+![Use Case Diagram](EV_ServiceCenter_UseCaseDiagram.drawio.png)
+### 5.2. Use Case chi tiết (mô tả, dòng sự kiện, actors liên quan)
+#### 5.2.1. Use Case cho Khách hàng (Customer)
+**Use Case 1: Đặt lịch bảo dưỡng / sửa chữa** (BookMaintenance)  
+**Mô tả:** 
+Khách hàng có thể đặt lịch bảo dưỡng hoặc sửa chữa xe điện thông qua hệ thống trực tuyến.  
+**Tác nhân chính:** Customer  
+**Tiền điều kiện:** 
+- Khách hàng đã đăng nhập vào hệ thống.
+- Xe của khách hàng đã được đăng ký trong hồ sơ.
+
+**Hậu điều kiện:**
+- Lịch hẹn được lưu thành công.
+- Hệ thống gửi thông báo xác nhận đến khách hàng và trung tâm dịch vụ.
+
+**Dòng sự kiện chính:**
+1. Khách hàng chọn chức năng “Đặt lịch dịch vụ”.
+2. Hệ thống hiển thị danh sách trung tâm dịch vụ và loại dịch vụ.
+3. Khách hàng chọn trung tâm, loại dịch vụ, ngày và giờ mong muốn.
+4. Hệ thống kiểm tra khả năng trống của lịch kỹ thuật viên.
+5. Hệ thống xác nhận đặt lịch và lưu thông tin.
+6. Hệ thống gửi thông báo xác nhận đến khách hàng.
+
+**Luồng thay thế:**  
+4a. Nếu không có lịch trống, hệ thống hiển thị thời gian khả dụng khác.
+
+**Use Case 2: Theo dõi xe & nhận nhắc nhở bảo dưỡng** (View Veh_Status & Get Maintenance Reminders)  
+**Mô tả:**
+Khách hàng có thể xem tình trạng xe, lịch sử bảo dưỡng và nhận nhắc nhở bảo dưỡng định kỳ theo thời gian hoặc quãng đường.  
+**Tác nhân chính:** Customer  
+**Tiền điều kiện:** Xe đã được đăng ký trong hệ thống.  
+**Hậu điều kiện:** Khách hàng nhận được thông báo nhắc nhở và có thể đặt lịch mới.  
+**Dòng sự kiện chính:**
+1. Khách hàng truy cập “Theo dõi xe của tôi”.
+2. Hệ thống hiển thị thông tin xe, lịch sử dịch vụ và tình trạng hiện tại.
+3. Hệ thống kiểm tra điều kiện bảo dưỡng (km, thời gian).
+4. Nếu đến hạn, hệ thống gửi thông báo nhắc nhở.
+
+**Use Case 3: Thanh toán online** (Payment)  
+**Mô tả:**  
+Khách hàng thanh toán cho dịch vụ bảo dưỡng thông qua ví điện tử hoặc ngân hàng trực tuyến.  
+**Tác nhân chính:** Customer  
+**Tiền điều kiện:**
+- Dịch vụ đã hoàn tất.
+- Hóa đơn đã được tạo.
+
+**Hậu điều kiện:**
+- Thanh toán được ghi nhận.
+- Hệ thống gửi biên lai điện tử cho khách hàng.
+
+**Dòng sự kiện chính:**
+1. Khách hàng truy cập “Hóa đơn của tôi”.
+2. Chọn phương thức thanh toán (e-wallet, banking, thẻ).
+3. Hệ thống kết nối cổng thanh toán.
+4. Khách hàng xác nhận và hoàn tất giao dịch.
+5. Hệ thống cập nhật trạng thái thanh toán.
+
+**Luồng thay thế:**  
+4a. Nếu giao dịch thất bại, hệ thống thông báo lỗi và yêu cầu thử lại.
+
+#### 5.2.2. Use Case cho Nhân viên trung tâm (Staff)
+**Use Case 4: Tiếp nhận yêu cầu dịch vụ** (Receiving Booking)  
+**Mô tả:**  
+Nhân viên tiếp nhận yêu cầu bảo dưỡng từ khách hàng (trực tiếp hoặc qua hệ thống).  
+**Tác nhân chính:** Staff
+**Tiền điều kiện:** Hệ thống đang hoạt động, có quyền truy cập dữ liệu lịch hẹn.  
+**Hậu điều kiện:** Phiếu tiếp nhận dịch vụ được tạo.  
+**Dòng sự kiện chính:** 
+1. Nhân viên truy cập danh sách yêu cầu dịch vụ.
+2. Kiểm tra chi tiết xe và khách hàng.
+3. Xác nhận yêu cầu và tạo phiếu tiếp nhận dịch vụ.
+4. Phân công kỹ thuật viên xử lý.
+
+**Use Case 5: Quản lý lịch hẹn & hàng chờ**  
+**Mô tả:**  
+Nhân viên trung tâm có thể xem, chỉnh sửa, hoặc hủy các lịch hẹn.  
+**Tác nhân chính:** Staff  
+**Tiền điều kiện:** Có quyền truy cập module lịch hẹn.  
+**Hậu điều kiện:** Lịch hẹn được cập nhật trong hệ thống.  
+**Dòng sự kiện chính:**
+1. Nhân viên mở giao diện “Lịch hẹn”.
+2. Xem danh sách các cuộc hẹn theo ngày.
+3. Thay đổi hoặc hủy nếu có yêu cầu từ khách hàng.
+4. Hệ thống cập nhật lại trạng thái lịch hẹn.
+
+#### 5.2.3. Use Case cho Kỹ thuật viên (Technician)
 
 
 
