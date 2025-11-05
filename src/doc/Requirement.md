@@ -368,7 +368,7 @@ Nhân viên tiếp nhận yêu cầu bảo dưỡng từ khách hàng (trực ti
 3. Xác nhận yêu cầu và tạo phiếu tiếp nhận dịch vụ.
 4. Phân công kỹ thuật viên xử lý.
 
-**Use Case 5: Quản lý lịch hẹn & hàng chờ**  
+**Use Case 5: Quản lý lịch hẹn & hàng chờ**  (Appoinment Management)
 **Mô tả:**  
 Nhân viên trung tâm có thể xem, chỉnh sửa, hoặc hủy các lịch hẹn.  
 **Tác nhân chính:** Staff  
@@ -381,6 +381,68 @@ Nhân viên trung tâm có thể xem, chỉnh sửa, hoặc hủy các lịch h�
 4. Hệ thống cập nhật lại trạng thái lịch hẹn.
 
 #### 5.2.3. Use Case cho Kỹ thuật viên (Technician)
+**Use Case 6: Cập nhật tình trạng bảo dưỡng** (Update Progress)  
+**Mô tả:**  
+Kỹ thuật viên ghi nhận tiến độ bảo dưỡng của xe.  
+**Tác nhân chính:** Technician  
+**Tiền điều kiện:** Phiếu tiếp nhận đã được giao cho kỹ thuật viên.  
+**Hậu điều kiện:** Tiến độ bảo dưỡng được lưu và hiển thị cho khách hàng.  
+**Dòng sự kiện chính:**
+1. Kỹ thuật viên đăng nhập.
+2. Xem danh sách xe được phân công.
+3. Cập nhật trạng thái: “Đang làm”, “Hoàn tất”, “Cần phụ tùng”.
+4. Hệ thống lưu lại thay đổi và thông báo cho khách hàng.
+
+**Use Case 7: Ghi nhận tình trạng xe** (Record Veh_Status)  
+**Mô tả:**  
+Trước khi bảo dưỡng, kỹ thuật viên kiểm tra và ghi nhận tình trạng xe.  
+**Tác nhân chính:** Technician  
+**Tiền điều kiện:** Xe đã được tiếp nhận.  
+**Hậu điều kiện:** Biên bản tình trạng xe được lưu trữ.  
+**Dòng sự kiện chính:**
+1. Kỹ thuật viên mở “Phiếu kiểm tra xe”.
+2. Nhập các thông tin: tình trạng pin, động cơ, hệ thống phanh, đèn, v.v.
+3. Hệ thống lưu lại kết quả.
+
+#### 5.2.4. Use Case cho Quản trị viên (Admin)
+**Use Case 8: Quản lý tài khoản người dùng** (User Management)  
+**Mô tả:**  
+Admin có thể tạo, chỉnh sửa hoặc khóa tài khoản nhân viên, kỹ thuật viên hoặc khách hàng.  
+**Tác nhân chính:** Admin  
+**Tiền điều kiện:** Admin đăng nhập hệ thống.  
+**Hậu điều kiện:** Thông tin người dùng được cập nhật trong hệ thống.  
+**Dòng sự kiện chính:**
+1. Admin truy cập module “Quản lý người dùng”.
+2. Tìm kiếm tài khoản cần thao tác.
+3. Cập nhật thông tin hoặc trạng thái tài khoản.
+4. Lưu thay đổi.
+
+**Use Case 9: Quản lý phụ tùng & tồn kho** (Service / Spare parts Management)  
+**Mô tả:**  
+Admin theo dõi lượng phụ tùng EV tại trung tâm và thiết lập lượng tồn kho tối thiểu.  
+**Tác nhân chính:** Admin  
+**Tiền điều kiện:** Dữ liệu phụ tùng đã có trong hệ thống.  
+**Hậu điều kiện:** Tồn kho được cập nhật, hệ thống gợi ý nhập hàng nếu sắp hết.  
+**Dòng sự kiện chính:**
+1. Admin mở “Kho phụ tùng”.
+2. Xem danh sách và số lượng hiện tại.
+3. Cập nhật hoặc thêm phụ tùng mới.
+4. Hệ thống tính toán và đưa ra cảnh báo khi số lượng dưới ngưỡng tối thiểu.
+
+**Use Case 10: Xem báo cáo tài chính & thống kê** (Financial Management)  
+**Mô tả:**  
+Admin có thể xem báo cáo doanh thu, chi phí, lợi nhuận, và thống kê dịch vụ.  
+**Tác nhân chính:** Admin  
+**Tiền điều kiện:** Dữ liệu giao dịch đã được ghi nhận.  
+**Hậu điều kiện:** Báo cáo được hiển thị hoặc xuất file (PDF/Excel).  
+**Dòng sự kiện chính:**
+1. Admin chọn “Báo cáo tài chính”.
+2. Chọn khoảng thời gian cần xem.
+3. Hệ thống tổng hợp và hiển thị dữ liệu.
+4. Admin có thể xuất file báo cáo.
+
+### 5.3 Sơ đồ trình tự (Sequence Diagram)
+![Use Case Diagram](Sequence_Diagram)
 
 
 
