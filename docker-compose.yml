@@ -14,7 +14,8 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./data.sql:/docker-entrypoint-initdb.d/02_data.sql:ro
     networks:
       - evservice_network
     healthcheck:
@@ -23,12 +24,32 @@ services:
       timeout: 5s
       retries: 5
 
+  backend:
+    build: .
+    container_name: evservice_backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/evservice?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: evuser
+      SPRING_DATASOURCE_PASSWORD: evpass
+      # JVM tối ưu (tùy chọn)
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75 -XX:+UseG1GC
+      # VNPay config (điền giá trị sandbox/prod của bạn)
+      PAYMENT_GATEWAY_VNP_TMN_CODE: your_tmn_code
+      PAYMENT_GATEWAY_VNP_HASH_SECRET: your_secret
+      PAYMENT_GATEWAY_VNP_PAY_URL: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+      PAYMENT_GATEWAY_RETURN_URL: https://your-domain.com/payment/return
+      PAYMENT_GATEWAY_IPN_URL: https://your-domain.com/api/payment/gateway/ipn
+    ports:
+      - "8080:8080"
+    networks:
+      - evservice_network
+
 volumes:
   mysql_data:
-    driver: local
 
 networks:
   evservice_network:
     driver: bridge
-
-
