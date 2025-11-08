@@ -495,10 +495,132 @@ Hệ thống bao gồm các thành phần chính:
 3. Hệ thống xử lí, tổng hợp thống cơ dữ liệu từ cơ sở dữ liệu.
 4. Hệ thống gửi báo cáo thống kê cho Admin.
 
+### 5.4 Sơ đồ ERD
+![ERD](ERD.drawio.png)
+#### Mối quan hệ:
+**users → vehicles**  
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Owns / Sở hữu.  
+**Mô tả**: Mỗi khách hàng có thể sở hữu nhiều xe, một xe thuộc sở hữu của một khách hàng.
+****
+**users (customer) - service_appointments**  
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Books / Đặt lịch.    
+**Mô tả**: Khách hàng đặt nhiều lịch hẹn, một lịch hẹn thì được đặt bởi một khách hàng.
+****
+**users (technician) - service_appointments**  
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Assigned / Được phân công     
+**Mô tả**: Kỹ thuật viên có thể được chỉ định nhiều cuộc hẹn, Một cuộc hẹn thì có một kỹ thuật viên chỉ định.  
+****
+**service_centers - service_appointments**  
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Handles / Xử lý   
+**Mô tả**: Mỗi trung tâm phục vụ nhiều cuộc hẹn, Một cuộc hẹn diễn ra ở một trung tâm.
+**** 
+**vehicles - service_appointments**  
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Scheduled For / Dành cho  
+**Mô tả**: Một xe có thể được đặt nhiều cuộc hẹn, một cuộc hẹn chỉ dành cho một xe.
+****
+**service_appointments - service_records**  
+**Kiểu**: 1-1    
+**Tên mối quan hệ**: Produces / Sinh ra    
+**Mô tả**: Một cuộc hẹn tạo ra một bản ghi dịch vụ.
+****  
+**service_records - service_parts_usage**
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Includes / Bao gồm  
+**Mô tả**: Một bản ghi dịch vụ có thể dùng nhiều phụ tùng.  
+****
+**parts - service_parts_usage**
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Used In / Được dùng trong   
+**Mô tả**: Một phụ tùng có thể được sử dụng nhiều lần.  
+****  
+**service_records - invoices**
+**Kiểu**: 1-1  
+**Tên mối quan hệ**: Generates / Tạo hóa đơn   
+**Mô tả**: Một bản ghi dịch vụ sinh ra một hóa đơn
+****  
+**invoices - payments**
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Has / Có thanh toán  
+**Mô tả**: Một hóa đơn có thể có nhiều lần thanh toán, một lần thanh toán thì chỉ thanh toán một hóa đơn.
+****  
+**users - maintenance_reminders**
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Receives / Nhận nhắc nhở
+**Mô tả**: Người dùng có thể có nhiều nhắc nhở, một nhắc nhỡ thì liên quan đến một người dùng.
+**** 
+**users (technician) - technician_schedules**
+**Kiểu**: 1-N  
+**Tên mối quan hệ**: Has Schedule / Có lịch làm việc  
+**Mô tả**: Mỗi kỹ thuật viên có nhiều ca làm, một lịch làm việc thì của một kỹ thuật viên.
+****  
+**users (sender) ↔ users (receiver) qua chat_messages**
+**Kiểu**: N-M 
+**Tên mối quan hệ**: Communicates / Giao tiếp  
+**Mô tả**: Người dùng nhắn tin qua lại với nhau.  
 
+#### Mô tả chi tiết các thực thể:
+**Entity**: users  
+**Mô tả**: Thông tin người dùng, bao gồm customer, staff, technician, admin.  
+**Khóa chính**: id
 
+**Entity**: service_centers  
+**Mô tả**: Danh sách trung tâm bảo dưỡng, gồm tên, địa chỉ, liên hệ.  
+**Khóa chính**: id
 
+**Entity**: vehicles  
+**Mô tả**: Thông tin xe điện của khách hàng, gắn với users.  
+**Khóa chính**: id  
+**Khóa ngoại / Liên kết**: user_id → users(id)
 
+**Entity**: service_appointments  
+**Mô tả**: Lịch hẹn dịch vụ, liên kết khách hàng, xe, trung tâm, kỹ thuật viên.  
+**Khóa chính**: id  
+**Khóa ngoại / Liên kết**: customer_id, vehicle_id, service_center_id, technician_id  
+
+**Entity**: service_records  
+**Mô tả**: Ghi nhận chi tiết bảo dưỡng: tình trạng xe, công việc thực hiện, thời gian.  
+**Khóa chính**: id  
+**Khóa ngoại / Liên kết**: appointment_id, vehicle_id
+
+**Entity**: parts  
+**Mô tả**: Thông tin phụ tùng, giá, tồn kho, thuộc trung tâm dịch vụ.  
+**Khóa chính**: id  
+**Khóa ngoại / Liên kết**: service_center_id  
+
+**Entity**: service_parts_usage  
+**Mô tả**: Liên kết giữa service_records và parts, thể hiện phụ tùng sử dụng trong từng dịch vụ.  
+**Khóa chính**: id  
+**Khóa ngoại / Liên kết**: service_record_id, parts_id
+
+**Entity**: invoices  
+**Mô tả**: Hóa đơn dịch vụ.
+**Khóa chính**: id
+**Khóa ngoại / Liên kết**: service_record_id, customer_id
+
+**Entity**: payments  
+**Mô tả**: Giao dịch thanh toán (tiền, phương thức, trạng thái).  
+**Khóa chính**: id  
+**Khóa ngoại / Liên kết**: invoice_id
+
+**Entity**: maintenance_reminders  
+**Mô tả**: Nhắc nhở bảo dưỡng định kỳ cho khách hàng.  
+**Khóa chính**: id  
+**Khóa ngoại / Liên kết**: user_id, vehicle_id
+
+**Entity**: chat_messages  
+**Mô tả**: Tin nhắn giữa khách hàng và nhân viên/kỹ thuật viên.  
+**Khóa chính**: id  
+**Khóa ngoại / Liên kết**: sender_id, receiver_id, appointment_id
+
+**Entity**: technician_schedules  
+**Mô tả**: Lịch làm việc của kỹ thuật viên theo ngày và ca.  
+**Khóa chính**: id  
+**Khóa ngoại / Liên kết**: technician_id
 
 
 
