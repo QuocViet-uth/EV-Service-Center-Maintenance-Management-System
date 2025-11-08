@@ -1,13 +1,16 @@
-export default function Card({ title, children, className = "" }) {
+import React from 'react';
+
+const Card = ({ title, children, className = '' }) => {
   return (
-    <div
-      className={`bg-[#121212] border border-zinc-800 rounded-xl p-5 
-      transition-all duration-300 hover:scale-[1.01]
-      hover:border-red-500 hover:shadow-[0_0_25px_rgba(255,0,0,0.2)]
-      ${className}`}
-    >
-      {title && <div className="text-sm text-zinc-500 mb-3 uppercase">{title}</div>}
+    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 ${className}`}>
+      {title && (
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
+          {title}
+        </h3>
+      )}
       {children}
     </div>
   );
-}
+};
+
+export default Card;

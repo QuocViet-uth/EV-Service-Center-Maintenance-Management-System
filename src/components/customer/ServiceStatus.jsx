@@ -1,81 +1,94 @@
-import { useEffect, useState } from "react";
-import { fetchAppointments, updateProgress } from "../../services/customerApi";
-import Card from "../../components/common/Card";
-import ProgressBar from "../../components/customer/ProgressBar";
-import Button from "../../components/common/Button";
+import React from 'react';
+import Card from '../common/Card';
+import ProgressBar from './ProgressBar';
 
-export default function ServiceStatus() {
-  const [appointments, setAppointments] = useState([]);
+export default function ServiceStatus({ appointments = [] }) {
+  if (!appointments || appointments.length === 0) {
+    return (
+      <Card title="Trạng thái dịch vụ">
+        <p className="text-gray-500 dark:text-gray-400 text-center py-8">
+          Chưa có dịch vụ nào
+        </p>
+      </Card>
+    );
+  }
 
-  const load = () => fetchAppointments().then(setAppointments);
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'pending':
+        return 'Chờ xử lý';
+      case 'processing':
+        return 'Đang xử lý';
+      case 'completed':
+        return 'Hoàn tất';
+      default:
+        return status;
+    }
+  };
 
-  useEffect(() => {
-    load();
-    const interval = setInterval(() => {
-      // auto refresh every 4s to simulate live tracking
-      load();
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const onBoost = async (id) => {
-    const item = appointments.find(a => a.id === id);
-    if (item.progress < 100) {
-      await updateProgress(id, item.progress + 10);
-      load();
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'pending':
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
+      case 'processing':
+        return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300';
+      case 'completed':
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
+      default:
+        return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300';
     }
   };
 
   return (
-    <div>
-      <h2 className="text-3xl font-semibold mb-6">Service Status</h2>
-      <span className={`uppercase text-sm font-bold
-    ${item.status === "processing" ? "animate-breath text-red-400" : ""}
-    ${item.status === "pending" ? "text-yellow-300" : ""}
-    ${item.status === "completed" ? "text-emerald-400" : ""}
-    `}>
-        {item.status}
-    </span>
-
-      <div className="grid gap-6">
-        {appointments.map(item => (
-          <Card key={item.id}>
-            <div className="flex justify-between items-center">
-              <div>
-                <div className="font-semibold text-lg">{item.serviceType}</div>
-                <div className="text-sm text-zinc-500">
-                  {new Date(item.date).toLocaleString()}
-                </div>
-                <div className="text-xs text-zinc-400">
-                  Center: {item.center}
-                </div>
+    <Card title="Trạng thái dịch vụ">
+      <div className="space-y-4">
+        {appointments.map((appointment) => (
+          <div
+            key={appointment.id}
+            className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+          >
+            <div className="flex justify-between items-start mb-3">
+              <div className="flex-1">
+                <h4 className="font-semibold text-gray-800 dark:text-white mb-1">
+                  {appointment.serviceType}
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {new Date(appointment.date).toLocaleString('vi-VN')}
+                </p>
+                {appointment.center && (
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                    📍 {appointment.center}
+                  </p>
+                )}
               </div>
-              <div className="text-right">
-                <span className="uppercase text-red-400 text-xs font-bold">
-                  {item.status}
-                </span>
-              </div>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                  appointment.status
+                )}`}
+              >
+                {getStatusLabel(appointment.status)}
+              </span>
             </div>
 
-            {/* Progress area */}
-            {item.status !== "completed" ? (
+            {appointment.status !== 'completed' && (
               <div className="mt-4">
-                <ProgressBar progress={item.progress} />
-                <p className="text-zinc-300 mt-1 text-sm">{item.progress}%</p>
-                <Button
-                  onClick={() => onBoost(item.id)}
-                  className="mt-3 bg-zinc-900 border border-red-900 hover:bg-red-700"
-                >
-                  Boost Progress +10%
-                </Button>
+                <ProgressBar progress={appointment.progress || 0} />
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                  Tiến độ: {appointment.progress || 0}%
+                </p>
               </div>
-            ) : (
-              <p className="text-emerald-400 font-semibold mt-4">✅ COMPLETED</p>
             )}
-          </Card>
+
+            {appointment.status === 'completed' && (
+              <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <p className="text-sm font-semibold text-green-800 dark:text-green-300">
+                  ✅ Dịch vụ đã hoàn tất
+                </p>
+              </div>
+            )}
+          </div>
         ))}
       </div>
-    </div>
-
+    </Card>
   );
 }

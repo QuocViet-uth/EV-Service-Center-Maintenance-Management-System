@@ -1,18 +1,14 @@
-export default function ProgressBar({ progress }) {
+export default function ProgressBar({ progress = 0 }) {
   return (
-    <div className="w-full h-3 bg-zinc-900 rounded-full overflow-hidden relative">
+    <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden relative">
       <div
-        className={`h-full rounded-full transition-all duration-1000 ease-out
-        ${progress < 100 ? "animate-pulse-bar" : ""}`}
+        className="h-full rounded-full transition-all duration-500 ease-out"
         style={{
-          width: `${progress}%`,
-          background: progress < 100
-            ? "linear-gradient(90deg, #ff0000, #ff4d4d)"
-            : "linear-gradient(90deg, #00ff9d, #00b873)",
-          boxShadow:
+          width: `${Math.min(100, Math.max(0, progress))}%`,
+          background:
             progress < 100
-              ? "0 0 15px rgba(255,0,0,0.6)"
-              : "0 0 12px rgba(0,255,130,0.7)",
+              ? 'linear-gradient(90deg, #5044E5, #6B5CE6)'
+              : 'linear-gradient(90deg, #10b981, #059669)',
         }}
       />
     </div>
