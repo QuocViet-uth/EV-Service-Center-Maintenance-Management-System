@@ -1,0 +1,757 @@
+{
+	"info": {
+		"_postman_id": "evservice-collection-2024",
+		"name": "EV Service Backend - Full API Collection",
+		"description": "Complete API collection for EV Service Center Maintenance Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register - Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"customer1\",\n  \"password\": \"password123\",\n  \"email\": \"customer1@example.com\",\n  \"fullName\": \"Customer One\",\n  \"phoneNumber\": \"0909000001\",\n  \"role\": \"CUSTOMER\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login - Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.token) {",
+									"        pm.environment.set(\"customer_token\", jsonData.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"customer1\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Add Vehicle",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vin\": \"VIN0000000001\",\n  \"model\": \"VF5\",\n  \"brand\": \"VinFast\",\n  \"year\": 2023,\n  \"licensePlate\": \"30A-12345\",\n  \"color\": \"Red\",\n  \"currentMileage\": 12000,\n  \"maintenanceIntervalKm\": 5000,\n  \"maintenanceIntervalDays\": 180,\n  \"servicePackageExpiry\": \"2025-01-01\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/customer/vehicles",
+							"host": ["{{base_url}}"],
+							"path": ["api", "customer", "vehicles"]
+						}
+					}
+				},
+				{
+					"name": "Get My Vehicles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/customer/vehicles",
+							"host": ["{{base_url}}"],
+							"path": ["api", "customer", "vehicles"]
+						}
+					}
+				},
+				{
+					"name": "Create Appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vehicleId\": 1,\n  \"serviceCenterId\": 1,\n  \"serviceType\": \"MAINTENANCE\",\n  \"scheduledDateTime\": \"2025-12-10T10:30:00\",\n  \"description\": \"Bảo dưỡng định kỳ\",\n  \"customerNotes\": \"Kiểm tra lốp\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/customer/appointments",
+							"host": ["{{base_url}}"],
+							"path": ["api", "customer", "appointments"]
+						}
+					}
+				},
+				{
+					"name": "Get My Appointments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/customer/appointments",
+							"host": ["{{base_url}}"],
+							"path": ["api", "customer", "appointments"]
+						}
+					}
+				},
+				{
+					"name": "Get Service History",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/customer/vehicles/:vehicleId/history",
+							"host": ["{{base_url}}"],
+							"path": ["api", "customer", "vehicles", ":vehicleId", "history"],
+							"variable": [
+								{
+									"key": "vehicleId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get My Invoices",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/customer/invoices",
+							"host": ["{{base_url}}"],
+							"path": ["api", "customer", "invoices"]
+						}
+					}
+				},
+				{
+					"name": "Get My Reminders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/customer/reminders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "customer", "reminders"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff",
+			"item": [
+				{
+					"name": "Get Waiting Queue",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/staff/appointments/queue?serviceCenterId=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "staff", "appointments", "queue"],
+							"query": [
+								{
+									"key": "serviceCenterId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Confirm Appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"url": {
+							"raw": "{{base_url}}/api/staff/appointments/:appointmentId/confirm?technicianId=2",
+							"host": ["{{base_url}}"],
+							"path": ["api", "staff", "appointments", ":appointmentId", "confirm"],
+							"variable": [
+								{
+									"key": "appointmentId",
+									"value": "1"
+								}
+							],
+							"query": [
+								{
+									"key": "technicianId",
+									"value": "2"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Vehicle Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/staff/vehicles/:vehicleId",
+							"host": ["{{base_url}}"],
+							"path": ["api", "staff", "vehicles", ":vehicleId"],
+							"variable": [
+								{
+									"key": "vehicleId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Send Chat Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "Xin chào, lịch hẹn của bạn đã được xác nhận."
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/chat/send?receiverId=1&appointmentId=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "staff", "chat", "send"],
+							"query": [
+								{
+									"key": "receiverId",
+									"value": "1"
+								},
+								{
+									"key": "appointmentId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Technician",
+			"item": [
+				{
+					"name": "Start Service",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technician_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"url": {
+							"raw": "{{base_url}}/api/technician/service/start/:appointmentId",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technician", "service", "start", ":appointmentId"],
+							"variable": [
+								{
+									"key": "appointmentId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Service Record",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technician_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"url": {
+							"raw": "{{base_url}}/api/technician/service/:recordId?vehicleCondition=Tốt&workPerformed=Bảo dưỡng định kỳ&batteryCheck=OK&motorCheck=OK&chargingSystemCheck=OK",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technician", "service", ":recordId"],
+							"variable": [
+								{
+									"key": "recordId",
+									"value": "1"
+								}
+							],
+							"query": [
+								{
+									"key": "vehicleCondition",
+									"value": "Tốt"
+								},
+								{
+									"key": "workPerformed",
+									"value": "Bảo dưỡng định kỳ"
+								},
+								{
+									"key": "batteryCheck",
+									"value": "OK"
+								},
+								{
+									"key": "motorCheck",
+									"value": "OK"
+								},
+								{
+									"key": "chargingSystemCheck",
+									"value": "OK"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Use Parts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technician_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"url": {
+							"raw": "{{base_url}}/api/technician/service/:recordId/parts?partsId=1&quantity=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technician", "service", ":recordId", "parts"],
+							"variable": [
+								{
+									"key": "recordId",
+									"value": "1"
+								}
+							],
+							"query": [
+								{
+									"key": "partsId",
+									"value": "1"
+								},
+								{
+									"key": "quantity",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Complete Service",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technician_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"url": {
+							"raw": "{{base_url}}/api/technician/service/:recordId/complete?laborCost=500000",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technician", "service", ":recordId", "complete"],
+							"variable": [
+								{
+									"key": "recordId",
+									"value": "1"
+								}
+							],
+							"query": [
+								{
+									"key": "laborCost",
+									"value": "500000"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Process Payment (Mock)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"invoiceId\": 1,\n  \"paymentMethod\": \"MOMO\",\n  \"paymentReference\": \"ORDER123\",\n  \"paymentProvider\": \"MOMO\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payment/process",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payment", "process"]
+						}
+					}
+				},
+				{
+					"name": "Mark Offline Paid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"url": {
+							"raw": "{{base_url}}/api/payment/invoice/:invoiceId/mark-offline-paid?reference=OFFLINE-001",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payment", "invoice", ":invoiceId", "mark-offline-paid"],
+							"variable": [
+								{
+									"key": "invoiceId",
+									"value": "1"
+								}
+							],
+							"query": [
+								{
+									"key": "reference",
+									"value": "OFFLINE-001"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Payment By Invoice",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/payment/invoice/:invoiceId",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payment", "invoice", ":invoiceId"],
+							"variable": [
+								{
+									"key": "invoiceId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Low Stock Parts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/admin/parts/low-stock?serviceCenterId=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "parts", "low-stock"],
+							"query": [
+								{
+									"key": "serviceCenterId",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Financial Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/admin/reports/financial?startDate=2025-01-01T00:00:00&endDate=2025-12-31T23:59:59",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "reports", "financial"],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-01-01T00:00:00"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-12-31T23:59:59"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Profit Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/admin/reports/profit?startDate=2025-01-01T00:00:00&endDate=2025-12-31T23:59:59",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "reports", "profit"],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-01-01T00:00:00"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-12-31T23:59:59"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Estimate Quotation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"url": {
+							"raw": "{{base_url}}/api/admin/quotes/estimate?serviceCenterId=1&partsIds=1,2&quantities=2,1&laborCost=500000&serviceFee=50000&discount=30000&tax=10000",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "quotes", "estimate"],
+							"query": [
+								{
+									"key": "serviceCenterId",
+									"value": "1"
+								},
+								{
+									"key": "partsIds",
+									"value": "1,2"
+								},
+								{
+									"key": "quantities",
+									"value": "2,1"
+								},
+								{
+									"key": "laborCost",
+									"value": "500000"
+								},
+								{
+									"key": "serviceFee",
+									"value": "50000"
+								},
+								{
+									"key": "discount",
+									"value": "30000"
+								},
+								{
+									"key": "tax",
+									"value": "10000"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}
+
