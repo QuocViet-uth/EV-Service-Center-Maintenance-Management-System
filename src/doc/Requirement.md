@@ -851,11 +851,62 @@ Báo cáo hệ thống do quản trị viên tạo.
 |Invoice	|Payment	|Hóa đơn phụ thuộc vào thông tin thanh toán để cập nhật trạng thái.|
 |Customer	|MaintenanceReminder	|Nhắc nhở được sinh tự động từ dữ liệu khách hàng và xe.|
 |Technician	|ServiceRecord	|Kỹ thuật viên phụ thuộc vào phiếu dịch vụ để ghi nhận tiến độ và công việc.|
-
-	
-	
-	
-
-
+### 5.6. Sơ đồ hoạt động (Activity Diagram)
+#### 5.6.1. Activity Diagram Customer Booking
+![Activity Diagram](AD_Customer_Booking.drawio.png)  
+Biểu mẫu mô tả biểu đồ hoạt động
+|Thành phần	|Mô tả	|
+|:------|:------|
+|Tên biểu đồ|Biểu đồ mô tả hoạt động đặt lịch sửa chữa/ bảo dưỡng|
+|Mô tả tổng quan|Khách hàng đặt lịch hẹn sửa chữa/ bảo dưỡng cho xe.|
+|Các hoạt động chính|Nhập thông tin, chọn lịch, xác nhận đặt lịch|
+|Các đối tượng tham gia|Khách hàng, Cơ sở dữ liệu trung tâm dịch vụ|
+|Luồng điều khiển|Theo trình tự từ Chọn “Đặt lịch bảo dưỡng/ sửa chữa” đến thông báo xác nhận đặt lịch|
+|Ứng dụng|Giúp xác định rõ các bước cần thực hiện trong quá trình đặt lịch.|
+#### 5.6.2. Activity Diagram Customer Payment
+![Activity Diagram](AD_Customer_Payment.drawio.png)  
+Biểu mẫu mô tả biểu đồ hoạt động
+|Thành phần	|Mô tả	|
+|:------|:------|
+|Tên biểu đồ|Biểu đồ mô tả hoạt động thanh toán hóa đơn|
+|Mô tả tổng quan|Khách hàng thanh toán cho dịch vụ bảo dưỡng (trước hoặc sau khi hoàn thành).|
+|Các hoạt động chính|Kiểm tra hóa đơn, Chọn phương thức thanh toán, Thực hiện thanh toán|
+|Các quyết định|Xử lí thanh toán|
+|Các đối tượng tham gia|Khách hàng, hệ thống thanh toán, Cơ sở dữ liệu trung tâm dịch vụ|
+|Luồng điều khiển|Theo trình tự từ Chọn thanh toán đến Biên lai xác nhận|	
+|Ứng dụng|Giúp xác định rõ các bước cần thực hiện trong quá trình thanh toán.|	
+#### 5.6.3. Activity Diagram Staff
+![Activity Diagram](AD_Staff.drawio.png)  
+Biểu mẫu mô tả biểu đồ hoạt động
+|Thành phần	|Mô tả	|
+|:------|:------|
+|Tên biểu đồ|Biểu đồ mô tả hoạt động Quản lý lịch hẹn bảo dưỡng|
+|Mô tả tổng quan|Nhân viên xác nhận, cập nhật hoặc hủy lịch bảo dưỡng.|
+|Các hoạt động chính|Kiểm tra lịch hẹn, Chỉnh sửa lịch hẹn, Xác nhận lịch hẹn|
+|Các đối tượng tham gia|Nhân viên, Cơ sở dữ liệu trung tâm dịch vụ|
+|Luồng điều khiển|Theo trình tự từ Chọn “Quản lý lịch hẹn” đến Hệ thống gửi thông báo cho khách hàng|	
+|Ứng dụng|Giúp xác định rõ các bước cần thực hiện trong quá trình quản lí lịch hẹn của nhân viên trung tâm.|		
+#### 5.6.4. Activity Diagram Staff
+![Activity Diagram](AD_Technician.drawio.png)  
+Biểu mẫu mô tả biểu đồ hoạt động
+|Thành phần	|Mô tả	|
+|:------|:------|
+|Tên biểu đồ|Biểu đồ mô tả hoạt động bảo dưỡng|
+|Mô tả tổng quan|Kỹ thuật viên xử lý các công việc bảo dưỡng được giao.|
+|Các hoạt động chính|Xem danh sách công việc được giao, Xem chi tiết xe, tiến hành kiểm tra và bảo dưỡng, Cập nhật tình trạng xe, Báo cáo bảo dưởng, hoàn thành|
+|Các đối tượng tham gia|Kỹ thuật viên, Cơ sở dữ liệu trung tâm dịch vụ|
+|Luồng điều khiển|Theo trình tự từ Chọn “Danh sách công việc được giao” đến Đánh dấu “Hoàn thành”|	
+|Ứng dụng|Giúp xác định rõ các bước cần thực hiện trong quá trình bảo dưỡng/ sữa chữa xe của kỹ thuật viên.|
+#### 5.6.5. Activity Diagram Admin
+![Activity Diagram](AD_Admin.drawio.png)  
+Biểu mẫu mô tả biểu đồ hoạt động
+|Thành phần	|Mô tả	|
+|:------|:------|
+|Tên biểu đồ|Biểu đồ mô tả hoạt động quản lí hệ thống|
+|Mô tả tổng quan|Quản trị viên theo dõi, quản lí người dùng, phụ tùng, tài chính,...|
+|Các hoạt động chính|Chọn chức năng quản lí, Xem các báo cáo, cập nhật sửa chữa thông tin, xuất báo cáo|
+|Các đối tượng tham gia|quản trị viên, Cơ sở dữ liệu trung tâm dịch vụ|
+|Luồng điều khiển|Theo trình tự từ Chọn chức năng đến Hệ thống ghi log và lưu thay đổi|	
+|Ứng dụng|Giúp xác định các hoạt động quản lí của quản trị viên.|
 
 
