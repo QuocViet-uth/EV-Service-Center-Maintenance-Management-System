@@ -441,7 +441,7 @@ Admin có thể xem báo cáo doanh thu, chi phí, lợi nhuận, và thống k�
 3. Hệ thống tổng hợp và hiển thị dữ liệu.
 4. Admin có thể xuất file báo cáo.
 
-### 5.3 Sơ đồ trình tự (Sequence Diagram)
+### 5.3. Sơ đồ trình tự (Sequence Diagram)
 ![Sequence Diagram](Sequence_Diagram.drawio.png)
 
 **Mô tả tổng quan:**  
@@ -495,7 +495,7 @@ Hệ thống bao gồm các thành phần chính:
 3. Hệ thống xử lí, tổng hợp thống cơ dữ liệu từ cơ sở dữ liệu.
 4. Hệ thống gửi báo cáo thống kê cho Admin.
 
-### 5.4 Sơ đồ ERD
+### 5.4. Sơ đồ ERD
 ![ERD](ERD.drawio.png)
 #### Mối quan hệ:
 **users → vehicles**  
@@ -622,9 +622,236 @@ Hệ thống bao gồm các thành phần chính:
 **Khóa chính**: id  
 **Khóa ngoại / Liên kết**: technician_id
 
+### 5.5. Sơ đồ lớp (Class Diagram)
+![Class Diagram](ClassDiagram.drawio.png)
+#### 5.5.1. Mục đích
+Sơ đồ lớp mô tả **cấu trúc tĩnh** của hệ thống **EV Service Center Maintenance Management System**, thể hiện các lớp (class), thuộc tính, phương thức chính, và mối quan hệ giữa chúng.  
+Sơ đồ giúp xác định cách dữ liệu được lưu trữ, trao đổi và xử lý giữa các thành phần của hệ thống.
+#### 5.5.2. Mô tả chi tiết từng lớp
+**User**: 
+Lớp cơ sở của tất cả người dùng trong hệ thống.  
+Chứa các thông tin cơ bản và phương thức xác thực.  
+- Thuộc tính: id, name, email, phone, role, status
+- Phương thức:
+	+ login(): xác thực người dùng vào hệ thống bằng thông tin tài khoản.
+ 	+ logout(): đăng xuất khỏi hệ thống và hủy phiên đăng nhập hiện tại.
+- Quan hệ: lớp cha của Customer, Staff, Technician, Admin.
+****
+**Customer**: 
+Đại diện cho khách hàng sở hữu xe điện và sử dụng dịch vụ.
+- Thuộc tính: loyaltyPoints, customerType, tier
+- Phương thức:
+	+ bookAppointment(): đặt lịch bảo dưỡng hoặc sửa chữa cho xe.
+ 	+ viewServiceHistory(): xem lại lịch sử bảo dưỡng, hóa đơn, và phản hồi.
+- Quan hệ: kế thừa từ User, liên kết với Vehicle, CustomerPackage, MaintenanceReminder.
+****
+**Staff**: 
+Nhân viên trung tâm tiếp nhận và xử lý yêu cầu dịch vụ.
+- Thuộc tính: position, workShift
+- Phương thức:
+	+ manageAppointments(): duyệt và điều phối các lịch hẹn của khách hàng.
+ 	+ assistCustomer(): hỗ trợ khách hàng trong quá trình tiếp nhận dịch vụ.
+- Quan hệ: kế thừa User, liên kết với ChatRoom.
+****
+**Technician**: 
+Kỹ thuật viên thực hiện công việc bảo dưỡng và sửa chữa.
+- Thuộc tính:
+	+ specialization: tiến hành công việc bảo dưỡng theo phiếu dịch vụ.
+ 	+ certificateLevel: cập nhật trạng thái và kết quả công việc.
+- Phương thức: performService(), reportServiceStatus()
+- Quan hệ: kế thừa User, liên kết với ServiceRecord.
+****
+**Admin**: 
+Quản trị viên hệ thống, có quyền cao nhất.
+- Thuộc tính: accessLevel
+- Phương thức:
+	+ manageUsers(): tạo, chỉnh sửa, vô hiệu hóa tài khoản người dùng.
+	+ generateReports(): tạo báo cáo thống kê hoạt động hệ thống.
+- Quan hệ: kế thừa User, liên kết Report.
+****
+**Vehicle**: 
+Xe điện của khách hàng.
+- Thuộc tính: id, licensePlate, model, mileage, owner
+- Phương thức:
+	+ updateMileage(): cập nhật số km của xe sau mỗi lần bảo dưỡng.
+- Quan hệ: liên kết Customer, VehicleModel, Appointment.
+****
+**VehicleModel**: 
+Thông tin model xe, dùng để xác định quy trình bảo dưỡng.
+- Thuộc tính: id, name, brand, batteryType
+- Phương thức:
+	+ getMaintenanceSchedule(): trả về khung lịch bảo dưỡng chuẩn cho model.
+- Quan hệ: liên kết Vehicle.
+****
+**Appointment**: 
+Lịch hẹn bảo dưỡng giữa khách hàng và trung tâm.
+- Thuộc tính: id, vehicle, customer, serviceCenter, serviceType, appointmentDate, status
+- Phương thức:
+	+ confirm(): xác nhận lịch hẹn đã được chấp nhận.
+	+ cancel(): hủy lịch hẹn trước thời gian bảo dưỡng.
+- Quan hệ: liên kết Staff, Vehicle, ServiceCenter, ServiceType, ServiceRecord.
+****
+**ServiceRecord**: 
+Phiếu ghi nhận quá trình bảo dưỡng hoặc sửa chữa.
+- Thuộc tính: id, appointment, technician, startDate, endDate, status
+- Phương thức:
+	+ addChecklist(): thêm danh sách kiểm tra cho dịch vụ.
+	+ closeRecord(): kết thúc phiếu dịch vụ sau khi hoàn thành bảo dưỡng.
+- Quan hệ: liên kết Technician, Appointment, Checklist, Invoice, PartUsageHistory.
+****
+**Checklist**: 
+Danh mục kiểm tra EV trong quá trình bảo dưỡng.
+- Thuộc tính: id, category, description, status
+- Phương thức:
+	+ markCompleted(): đánh dấu hạng mục kiểm tra đã hoàn thành.
+- Quan hệ: thuộc ServiceRecord.
+****
+**ServiceType**: 
+Loại dịch vụ cung cấp tại trung tâm.
+- Thuộc tính: id, name, basePrice, estimatedTime
+- Phương thức:
+	+ calculatePrice(): tính giá ước lượng của dịch vụ dựa trên chi phí cơ bản và thời gian.
+- Quan hệ: liên kết Appointment.
+****
+**ServiceCenter**: 
+Trung tâm bảo dưỡng EV.
+- Thuộc tính: id, name, address, phone
+- Phương thức:
+	+ scheduleTechnician(): lập lịch phân công kỹ thuật viên cho các dịch vụ.
+- Quan hệ: liên kết Appointment, Inventory, PartUsageHistory.
+****
+**Part**: 
+Phụ tùng xe điện được sử dụng trong dịch vụ.
+- Thuộc tính: id, name, partCode, unitPrice, stockQuantity
+- Phương thức:
+	+ updateStock(): cập nhật số lượng tồn kho khi nhập mới hoặc sử dụng.
+- Quan hệ: liên kết Inventory, PartUsageHistory.
+****
+**Inventory**: 
+Tồn kho phụ tùng tại mỗi trung tâm.
+- Thuộc tính: id, serviceCenter, part, quantity, reorderLevel
+- Phương thức:
+	+ checkReorderAlert(): kiểm tra và cảnh báo khi số lượng tồn thấp hơn ngưỡng tối thiểu.
+- Quan hệ: liên kết Part, ServiceCenter.
+****
+**PartUsageHistory**: 
+Lưu lại lịch sử sử dụng phụ tùng.
+- Thuộc tính: id, part, serviceRecord, serviceCenter, usageDate, quantityUsed, usageType
+- Phương thức:
+	+ getQuarter(): xác định quý trong năm mà phụ tùng được sử dụng.
+	+ isHighDemandSeason(): kiểm tra xem phụ tùng có đang trong mùa cao điểm.
+- Quan hệ: liên kết Part, ServiceRecord, ServiceCenter.
+****
+**Invoice**: 
+Hóa đơn thanh toán cho dịch vụ bảo dưỡng.
+- Thuộc tính: id, serviceRecord, totalAmount, status
+- Phương thức:
+	+ generateInvoice(): tạo hóa đơn dựa trên thông tin phiếu dịch vụ và chi phí.
+- Quan hệ: liên kết ServiceRecord, Payment.
+****
+**Payment**: 
+Chi tiết giao dịch thanh toán.
+- Thuộc tính: id, invoice, method, amount, date
+- Phương thức:
+	+ processPayment(): xử lý thanh toán và cập nhật trạng thái hóa đơn.
+- Quan hệ: liên kết Invoice.
+****
+**MaintenancePackage**: 
+Gói bảo dưỡng định kỳ.
+- Thuộc tính: id, name, durationMonths, price
+- Phương thức:
+	+ renew(): gia hạn gói bảo dưỡng cho khách hàng khi hết hạn.
+- Quan hệ: liên kết CustomerPackage.
+****
+**CustomerPackage**: 
+Gói bảo dưỡng mà khách hàng đã mua.
+- Thuộc tính: id, customer, package, startDate, endDate, status
+- Phương thức:
+	+ checkValidity(): kiểm tra tình trạng còn hạn của gói bảo dưỡng.
+- Quan hệ: liên kết Customer, MaintenancePackage.
+****
+**Notification**: 
+Thông báo gửi đến người dùng.
+- Thuộc tính: id, user, message, dateSent, isRead
+- Phương thức:
+	+ markAsRead(): đánh dấu thông báo đã được xem.
+- Quan hệ: liên kết User.
+****
+**MaintenanceReminder**: 
+Nhắc nhở khách hàng đến kỳ bảo dưỡng.
+- Thuộc tính: id, customer, vehicle, reminderDate, type
+- Phương thức:
+	+ sendReminder(): gửi thông báo tự động đến khách hàng khi đến hạn.
+- Quan hệ: liên kết Customer.
+****
+**ChatRoom**: 
+Phòng trò chuyện giữa khách hàng và nhân viên.
+- Thuộc tính: id, customer, staff
+- Phương thức:
+	+ startChat(): khởi tạo một phiên trò chuyện mới.
+- Quan hệ: liên kết Customer, Staff, ChatMessage.
+****
+**ChatMessage**
+Tin nhắn trong phòng chat.
+- Thuộc tính: id, chatRoom, sender, content, timestamp
+- Phương thức: (Không có phương thức nghiệp vụ, chỉ lưu dữ liệu tin nhắn.)
+- Quan hệ: liên kết ChatRoom, User.
+****
+**Report**
+Báo cáo hệ thống do quản trị viên tạo.
+- Thuộc tính: admin, reportType, generatedDate
+- Phương thức:
+	+ generateReport(): tổng hợp dữ liệu và xuất báo cáo (doanh thu, dịch vụ, tồn kho…).
+- Quan hệ: liên kết Admin.
+#### 5.5.3. Mối quan hệ giữa các lớp (Class Relationships)
+##### 5.5.3.1. Quan hệ kế thừa (Inheritance)
+|Lớp cha|Lớp con|Ý nghĩa|
+|:------|:------|:------|
+|User 	|Customer |Khách hàng kế thừa các thuộc tính và hành vi cơ bản của người dùng.|  
+|User 	|Staff |Nhân viên trung tâm cũng là người dùng có quyền và chức năng riêng.  
+|User 	|Technician |Kỹ thuật viên là người dùng có chuyên môn bảo dưỡng EV.  |
+|User 	|Admin |Quản trị viên là người dùng có quyền cao nhất để giám sát và cấu hình hệ thống.|
+##### 5.5.3.2. Quan hệ kết hợp (Association)
+|Lớp A	|Lớp B	|Bội số	|Ý nghĩa	|
+|:------|:------|:------|:----------|
+|Customer	|Vehicle	|1 – *	|Một khách hàng có thể sở hữu nhiều xe điện.|
+|Vehicle	|VehicleModel	|* – 1	|Nhiều xe thuộc cùng một model.|
+|Customer	|Appointment|1 – *	|Một khách hàng có thể đặt nhiều lịch hẹn.|
+|Appointment	|Vehicle	|1 – 1	|Mỗi lịch hẹn gắn với một xe cụ thể.|
+|Appointment	|ServiceCenter	|* – 1	|Nhiều lịch hẹn có thể diễn ra tại cùng một trung tâm dịch vụ.|
+|Appointment	|ServiceType	|* – 1	|Mỗi lịch hẹn có một loại dịch vụ xác định.|
+|Appointment	|ServiceRecord	|1 – 1	|Mỗi lịch hẹn sinh ra một phiếu dịch vụ tương ứng.|
+|ServiceRecord	|Technician	|* – 1	|Một kỹ thuật viên thực hiện nhiều phiếu dịch vụ.|
+|ServiceRecord	|Checklist	|1 – *	|Một phiếu dịch vụ có nhiều hạng mục kiểm tra.|
+|ServiceRecord	|Invoice	|1 – 1	|Mỗi phiếu dịch vụ có một hóa đơn tương ứng.|
+|ServiceRecord	|PartUsageHistory	|1 – *	|Một phiếu dịch vụ có thể sử dụng nhiều phụ tùng.|
+|PartUsageHistory	|Part	|* – 1	|Nhiều bản ghi sử dụng cùng một phụ tùng.|
+|PartUsageHistory	|ServiceCenter	|* – 1	|Mỗi bản ghi phụ tùng thuộc về một trung tâm dịch vụ.|
+|ServiceCenter	|Inventory	|1 – *	|Mỗi trung tâm có kho phụ tùng riêng.|
+|Inventory	|Part	|* – 1	|Một phụ tùng có thể được lưu trữ trong nhiều kho khác nhau.|
+|Invoice	|Payment	|1 – *	|Một hóa đơn có thể có nhiều giao dịch thanh toán.|
+|Customer	|CustomerPackage	|1 – *	|Một khách hàng có thể đăng ký nhiều gói bảo dưỡng.|
+|CustomerPackage	|MaintenancePackage	|* – 1	|Nhiều khách hàng có thể sử dụng cùng loại gói bảo dưỡng.|
+|User	|Notification	|1 – *	|Mỗi người dùng nhận được nhiều thông báo.|
+|Customer	|MaintenanceReminder	|1 – *	|Một khách hàng có thể nhận nhiều nhắc nhở bảo dưỡng.|
+|Customer	|ChatRoom	|1 – *	|Một khách hàng có thể có nhiều phiên chat.|
+|Staff	|ChatRoom	|1 – *	|Một nhân viên có thể hỗ trợ nhiều khách hàng qua chat.|
+|ChatRoom	|ChatMessage	|1 – *	|Một phòng chat chứa nhiều tin nhắn.|
+|User	|ChatMessage	|1 – *	|Một người dùng có thể gửi nhiều tin nhắn.|
+|Admin	|Report	|1 – *	|Một quản trị viên có thể tạo nhiều báo cáo.|
+##### 5.5.3.3. Quan hệ kết tập (Aggregation)
+|Lớp tổng hợp	|Lớp thành phần	|Ý nghĩa|
+|:------|:------|:------|
+|ServiceCenter	|Inventory	|Kho phụ tùng là thành phần của trung tâm, nhưng tồn tại độc lập khi trung tâm bị xóa.|
+|ServiceCenter	|PartUsageHistory	|Lịch sử sử dụng phụ tùng gắn với trung tâm, nhưng dữ liệu vẫn tồn tại cho báo cáo.|
+##### 5.5.3.2. Quan hệ phụ thuộc (Dependency)
+|Lớp A (gọi)	|Lớp B (bị phụ thuộc)	|Ý nghĩa|
+|:------|:------|:------|
+|Admin	|Report	|Admin sử dụng lớp Report để sinh báo cáo hệ thống.|
+|Invoice	|Payment	|Hóa đơn phụ thuộc vào thông tin thanh toán để cập nhật trạng thái.|
+|Customer	|MaintenanceReminder	|Nhắc nhở được sinh tự động từ dữ liệu khách hàng và xe.|
+|Technician	|ServiceRecord	|Kỹ thuật viên phụ thuộc vào phiếu dịch vụ để ghi nhận tiến độ và công việc.|
 
-
-	
 	
 	
 	
