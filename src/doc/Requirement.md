@@ -886,7 +886,7 @@ Biểu mẫu mô tả biểu đồ hoạt động
 |Các đối tượng tham gia|Nhân viên, Cơ sở dữ liệu trung tâm dịch vụ|
 |Luồng điều khiển|Theo trình tự từ Chọn “Quản lý lịch hẹn” đến Hệ thống gửi thông báo cho khách hàng|	
 |Ứng dụng|Giúp xác định rõ các bước cần thực hiện trong quá trình quản lí lịch hẹn của nhân viên trung tâm.|		
-#### 5.6.4. Activity Diagram Staff
+#### 5.6.4. Activity Diagram Technician
 ![Activity Diagram](AD_Technician.drawio.png)  
 Biểu mẫu mô tả biểu đồ hoạt động
 |Thành phần	|Mô tả	|
